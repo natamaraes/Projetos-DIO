@@ -10,4 +10,5 @@ Este repositório foi criado com o intuito de armazenar e compartilhar os desafi
 ## Tecnologias Utilizadas
 
 - Linguagens de Programação: `Python`
+- Ferramentas: `GitHub`, `VSCode`
 
