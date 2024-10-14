@@ -1,18 +1,5 @@
-# Desafio - Criando um sistema bancário
+import datetime
 
-# Saque
-#   * Permite 3 saques diários;
-#   * Limite de 500 reais por saque;
-#   * Se não tiver saldo suficiente, exibir mensagem informando a falta de dinheiro;
-#   * Todos os saques devem ser armazenados em uma variável e exibidos na operação de extrato;
-# Depósito
-#   * Depositar valores positivos;
-#   * v1 trabalha apenas com 1 usuário;
-#   * Todos os depósitos devem ser armazenados em uma variável e exibidos na operação de extrato;
-# Extrato
-#   * Listar todos os depósitos e saques;
-#   * No final da listagem exibir o saldo atual da conta;
-#   * Valores no formato R$xxx.xx (R$1500.45);    
 
 menu = """
 
@@ -28,6 +15,9 @@ limite = 500
 extrato = ""
 numero_saques = 0
 LIMITE_SAQUES = 3
+numero_transacoes = 0
+LIMITE_TRANSACOES = 10
+data_hora = ""
 
 while True:
 
@@ -36,12 +26,18 @@ while True:
     if opcao == "d":
         valor = float(input("Informe o valor do depósito: "))
 
-        if valor > 0:
-            saldo += valor
-            extrato += f"Depósito: R$ {valor:.2f}\n"
+        if numero_transacoes < LIMITE_TRANSACOES: 
 
+            if valor > 0:
+                saldo += valor
+                data_hora = datetime.datetime.now()
+                extrato += f"{data_hora.strftime("%d/%m/%Y %H:%M")} - depósito: R$ {valor:.2f}\n"
+                numero_transacoes += 1 
+
+            else:
+                print("Operação falhou! O valor informado é inválido.")
         else:
-            print("Operação falhou! O valor informado é inválido.")
+                print("Operação falhou! Número máximo de transações diárias excedido.")
 
     elif opcao == "s":
         valor = float(input("Informe o valor do saque: "))
@@ -52,6 +48,8 @@ while True:
 
         excedeu_saques = numero_saques >= LIMITE_SAQUES
 
+        excedeu_transacoes = numero_transacoes >= LIMITE_TRANSACOES
+
         if excedeu_saldo:
             print("Operação falhou! Você não tem saldo suficiente.")
 
@@ -61,10 +59,15 @@ while True:
         elif excedeu_saques:
             print("Operação falhou! Número máximo de saques excedido.")
 
+        elif excedeu_transacoes:
+                print("Operação falhou! Número máximo de transações diárias excedido.")
+
         elif valor > 0:
             saldo -= valor
-            extrato += f"Saque: R$ {valor:.2f}\n"
+            data_hora = datetime.datetime.now()
+            extrato += f"{data_hora.strftime("%d/%m/%Y %H:%M")} - saque: R$ {valor:.2f}\n"
             numero_saques += 1
+            numero_transacoes += 1
 
         else:
             print("Operação falhou! O valor informado é inválido.")
